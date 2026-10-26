@@ -1532,11 +1532,12 @@
     <!-- MODAL: ADD PRODUCT -->
     <div id="addProductModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-[60] hidden items-center justify-center p-4">
         <div class="bg-white border border-gold-500/40 w-full max-w-lg rounded-2xl p-5 shadow-2xl">
-            <div class="flex justify-between items-center mb-4"><h3 class="font-heading font-bold text-gold-600">Tambah Produk Baharu</h3><button onclick="closeAddProductModal()" class="text-slate-400 hover:text-slate-600"><i class="fa-solid fa-xmark"></i></button></div>
+            <div class="flex justify-between items-center mb-4"><h3 id="addProductModalTitle" class="font-heading font-bold text-gold-600">Tambah Produk Baharu</h3><button onclick="closeAddProductModal()" class="text-slate-400 hover:text-slate-600"><i class="fa-solid fa-xmark"></i></button></div>
+            <input type="hidden" id="editProductId" value="">
             <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
                 <div class="md:col-span-2"><label class="block text-xs text-slate-700 mb-1">Nama Produk / Perfume *</label><input id="newProdName" placeholder="Contoh: Perfume Royal Musk" class="w-full px-3 py-2 bg-greycair-50 border border-greycair-300 rounded text-xs text-slate-800"></div>
                 <div><label class="block text-xs text-slate-700 mb-1">SKU</label><input id="newProdSku" placeholder="EC-001" class="w-full px-3 py-2 bg-greycair-50 border border-greycair-300 rounded text-xs text-slate-800"></div>
-                <div><label class="block text-xs text-slate-700 mb-1">Kategori</label><input id="newProdCategory" placeholder="Jubah / Perfume / Delivery" class="w-full px-3 py-2 bg-greycair-50 border border-greycair-300 rounded text-xs text-slate-800"></div>
+                <div><label class="block text-xs text-slate-700 mb-1">Kategori</label><select id="newProdCategory" class="w-full px-3 py-2 bg-greycair-50 border border-greycair-300 rounded text-xs text-slate-800"></select></div>
                 <div><label class="block text-xs text-slate-700 mb-1">Harga Jual (RM)</label><input type="number" id="newProdPrice" min="0" step="0.01" value="0" class="w-full px-3 py-2 bg-greycair-50 border border-greycair-300 rounded text-xs text-slate-800"></div>
                 <div><label class="block text-xs text-slate-700 mb-1">Kos Unit (RM)</label><input type="number" id="newProdCost" min="0" step="0.01" value="0" class="w-full px-3 py-2 bg-greycair-50 border border-greycair-300 rounded text-xs text-slate-800"></div>
                 <div><label class="block text-xs text-slate-700 mb-1">Stok Awal</label><input type="number" id="newProdStock" min="0" step="1" value="0" class="w-full px-3 py-2 bg-greycair-50 border border-greycair-300 rounded text-xs text-slate-800"></div>
@@ -1545,7 +1546,7 @@
                 <div><label class="block text-xs text-slate-700 mb-1">Saiz / Volume ml (koma)</label><input id="newProdSizes" placeholder="Free Size / 30ml, 50ml, 100ml" value="Free Size" class="w-full px-3 py-2 bg-greycair-50 border border-greycair-300 rounded text-xs text-slate-800"></div>
                 <div><label class="block text-xs text-slate-700 mb-1">Warna / Bau Perfume (koma)</label><input id="newProdColors" placeholder="Piawai / Musk, Oud, Vanilla" value="Piawai" class="w-full px-3 py-2 bg-greycair-50 border border-greycair-300 rounded text-xs text-slate-800"></div>
             </div>
-            <div class="flex justify-end gap-2 mt-5"><button onclick="closeAddProductModal()" class="px-4 py-2 bg-greycair-200 text-slate-700 rounded text-xs font-semibold">Batal</button><button onclick="saveNewProduct()" class="px-4 py-2 bg-gold-500 hover:bg-gold-600 text-white font-bold rounded text-xs shadow-sm">Simpan Produk</button></div>
+            <div class="flex justify-end gap-2 mt-5"><button onclick="closeAddProductModal()" class="px-4 py-2 bg-greycair-200 text-slate-700 rounded text-xs font-semibold">Batal</button><button id="saveProductBtn" onclick="saveNewProduct()" class="px-4 py-2 bg-gold-500 hover:bg-gold-600 text-white font-bold rounded text-xs shadow-sm">Simpan Produk</button></div>
         </div>
     </div>
 
@@ -3856,7 +3857,7 @@
             document.getElementById('invStatOut').innerText=out;
             document.getElementById('invStatValue').innerText='RM '+value.toFixed(2);
             const rows=products.filter(p=>{const st=getStockStatus(p); return (!q || `${p.name} ${p.sku} ${p.category}`.toLowerCase().includes(q)) && (filter==='ALL'||filter===st);});
-            body.innerHTML=rows.map(p=>`<tr class="border-t border-greycair-200 hover:bg-greycair-50"><td class="px-3 py-2 text-gold-700 font-semibold">${p.sku}</td><td class="px-3 py-2"><div class="font-semibold text-slate-800">${p.name}</div><div class="text-[10px] text-slate-500">ID: ${p.id}</div></td><td class="px-3 py-2 text-slate-600">${p.category||'-'}</td><td class="px-3 py-2 text-right">RM ${Number(p.price||0).toFixed(2)}</td><td class="px-3 py-2 text-right text-slate-500">RM ${Number(p.cost||0).toFixed(2)}</td><td class="px-3 py-2 text-right font-bold ${p.stock<=0?'text-red-600':p.stock<=p.minStock?'text-amber-600':'text-emerald-600'}">${p.stock}</td><td class="px-3 py-2 text-right text-slate-500">${p.minStock}</td><td class="px-3 py-2 text-center">${statusBadge(p)}</td><td class="px-3 py-2 text-right whitespace-nowrap"><button onclick="openStockActionModal(${p.id},'IN')" class="px-2 py-1 bg-emerald-600 hover:bg-emerald-500 text-white rounded text-[10px] font-bold mr-1">+ Restok</button><button onclick="openStockActionModal(${p.id},'ADJUST')" class="px-2 py-1 bg-greycair-200 hover:bg-greycair-300 text-slate-700 rounded text-[10px] font-semibold mr-1">Pelarasan</button><button onclick="deleteInventoryProduct(this.dataset.productId)" data-product-id="${String(p.id).replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}" style="display:inline-flex;align-items:center;visibility:visible;opacity:1" class="px-2 py-1 bg-red-600 hover:bg-red-700 text-white rounded text-[10px] font-bold" title="Padam produk daripada inventori"><i class="fa-solid fa-trash-can mr-1"></i>Delete</button></td></tr>`).join('') || '<tr><td colspan="9" class="px-3 py-8 text-center text-slate-500">Tiada produk ditemui.</td></tr>';
+            body.innerHTML=rows.map(p=>`<tr class="border-t border-greycair-200 hover:bg-greycair-50"><td class="px-3 py-2 text-gold-700 font-semibold">${p.sku}</td><td class="px-3 py-2"><div class="font-semibold text-slate-800">${p.name}</div><div class="text-[10px] text-slate-500">ID: ${p.id}</div></td><td class="px-3 py-2 text-slate-600">${p.category||'-'}</td><td class="px-3 py-2 text-right">RM ${Number(p.price||0).toFixed(2)}</td><td class="px-3 py-2 text-right text-slate-500">RM ${Number(p.cost||0).toFixed(2)}</td><td class="px-3 py-2 text-right font-bold ${p.stock<=0?'text-red-600':p.stock<=p.minStock?'text-amber-600':'text-emerald-600'}">${p.stock}</td><td class="px-3 py-2 text-right text-slate-500">${p.minStock}</td><td class="px-3 py-2 text-center">${statusBadge(p)}</td><td class="px-3 py-2 text-right whitespace-nowrap"><button onclick="editInventoryProduct(this.dataset.productId)" data-product-id="${String(p.id).replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}" class="px-2 py-1 bg-sky-600 hover:bg-sky-700 text-white rounded text-[10px] font-bold mr-1" title="Edit maklumat produk"><i class="fa-solid fa-pen mr-1"></i>Edit</button><button onclick="openStockActionModal(${p.id},'IN')" class="px-2 py-1 bg-emerald-600 hover:bg-emerald-500 text-white rounded text-[10px] font-bold mr-1">+ Restok</button><button onclick="openStockActionModal(${p.id},'ADJUST')" class="px-2 py-1 bg-greycair-200 hover:bg-greycair-300 text-slate-700 rounded text-[10px] font-semibold mr-1">Pelarasan</button><button onclick="deleteInventoryProduct(this.dataset.productId)" data-product-id="${String(p.id).replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}" style="display:inline-flex;align-items:center;visibility:visible;opacity:1" class="px-2 py-1 bg-red-600 hover:bg-red-700 text-white rounded text-[10px] font-bold" title="Padam produk daripada inventori"><i class="fa-solid fa-trash-can mr-1"></i>Delete</button></td></tr>`).join('') || '<tr><td colspan="9" class="px-3 py-8 text-center text-slate-500">Tiada produk ditemui.</td></tr>';
         }
         
         // PADAM PRODUK DARIPADA INVENTORI (ADMIN SAHAJA)
@@ -3976,24 +3977,77 @@
             alert(`Restok ${p.name} [${sizeVal}/${colorVal}] berjaya: Stok ${before} → ${after}.`);
         }
 
+        function getExistingProductCategories() {
+            const standard = ['Jubah', 'Kurta', 'Kopiah', 'Perfume', 'Aksesori'];
+            const found = [...standard, ...products.map(p => String(p.category || '').trim())]
+                .filter(Boolean);
+            return [...new Set(found)].sort((a, b) => a.localeCompare(b, 'ms', { sensitivity: 'base' }));
+        }
+
+        function populateProductCategoryDropdown(selectedCategory = '') {
+            const select = document.getElementById('newProdCategory');
+            if (!select) return;
+            const categories = getExistingProductCategories();
+            if (selectedCategory && !categories.some(c => c.toLowerCase() === selectedCategory.toLowerCase())) categories.push(selectedCategory);
+            select.innerHTML = categories.map(c => `<option value="${String(c).replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}">${String(c).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}</option>`).join('');
+            if (selectedCategory) select.value = categories.find(c => c.toLowerCase() === selectedCategory.toLowerCase()) || selectedCategory;
+            else select.value = categories.includes('Perfume') ? 'Perfume' : (categories[0] || 'Aksesori');
+        }
+
         function openAddProductModal(){
+            document.getElementById('editProductId').value = '';
+            document.getElementById('addProductModalTitle').textContent = 'Tambah Produk Baharu';
+            document.getElementById('saveProductBtn').textContent = 'Simpan Produk';
             ['newProdName','newProdSku','newProdImage'].forEach(id=>document.getElementById(id).value='');
-            document.getElementById('newProdCategory').value='Perfume';
+            populateProductCategoryDropdown('Perfume');
             document.getElementById('newProdPrice').value=0;document.getElementById('newProdCost').value=0;document.getElementById('newProdStock').value=0;document.getElementById('newProdMinStock').value=5;
             document.getElementById('newProdSizes').value='30ml, 50ml, 100ml';
             document.getElementById('newProdColors').value='Musk, Oud, Vanilla';
             document.getElementById('addProductModal').classList.remove('hidden');document.getElementById('addProductModal').classList.add('flex');
         }
 
+        function editInventoryProduct(productId) {
+            const p = products.find(x => String(x.id) === String(productId));
+            if (!p) { alert('Produk tidak ditemui.'); return; }
+            document.getElementById('editProductId').value = String(p.id);
+            document.getElementById('addProductModalTitle').textContent = 'Edit Maklumat Produk';
+            document.getElementById('saveProductBtn').textContent = 'Simpan Perubahan';
+            document.getElementById('newProdName').value = p.name || '';
+            document.getElementById('newProdSku').value = p.sku || '';
+            populateProductCategoryDropdown(p.category || 'Aksesori');
+            document.getElementById('newProdPrice').value = Number(p.price) || 0;
+            document.getElementById('newProdCost').value = Number(p.cost) || 0;
+            document.getElementById('newProdStock').value = Math.max(0, Number(p.stock) || 0);
+            document.getElementById('newProdMinStock').value = Math.max(0, Number(p.minStock) || 0);
+            document.getElementById('newProdImage').value = p.image || '';
+            document.getElementById('newProdSizes').value = (Array.isArray(p.sizes) && p.sizes.length ? p.sizes : ['Free Size']).join(', ');
+            document.getElementById('newProdColors').value = (Array.isArray(p.colors) && p.colors.length ? p.colors : ['Piawai']).join(', ');
+            document.getElementById('addProductModal').classList.remove('hidden');
+            document.getElementById('addProductModal').classList.add('flex');
+        }
+
         function closeAddProductModal(){document.getElementById('addProductModal').classList.add('hidden');document.getElementById('addProductModal').classList.remove('flex');}
 
         function saveNewProduct(){
             const name=document.getElementById('newProdName').value.trim(); if(!name){alert('Nama produk diperlukan.');return;}
-            const sku=document.getElementById('newProdSku').value.trim()||('EC-'+Date.now().toString().slice(-6));
-            if(products.some(p=>String(p.sku).toLowerCase()===sku.toLowerCase())){alert('SKU tersebut sudah digunakan.');return;}
-            const stock=Math.max(0,parseInt(document.getElementById('newProdStock').value)||0),id=Date.now();
-            const p={id,name,sku,category:document.getElementById('newProdCategory').value.trim()||'Aksesori',price:parseFloat(document.getElementById('newProdPrice').value)||0,cost:parseFloat(document.getElementById('newProdCost').value)||0,stock,minStock:Math.max(0,parseInt(document.getElementById('newProdMinStock').value)||0),image:document.getElementById('newProdImage').value.trim(),sizes:document.getElementById('newProdSizes').value.split(',').map(x=>x.trim()).filter(Boolean),colors:document.getElementById('newProdColors').value.split(',').map(x=>x.trim()).filter(Boolean), isManual: true};
-            products.push(p); saveProducts(); if(stock>0)recordStockMovement(p,'IN',stock,0,stock,'Stok awal / produk baharu', {size:(p.sizes[0]||'Free Size'), color:(p.colors[0]||'Piawai'), source:'OPENING'}); syncInventoryToGoogleSheet(); closeAddProductModal();renderCategoryFilterButtons();renderProducts();renderInventoryTable();alert(`Produk ${name} berjaya ditambah.`);
+            const editId = document.getElementById('editProductId').value;
+            const existing = editId ? products.find(p => String(p.id) === String(editId)) : null;
+            const sku=document.getElementById('newProdSku').value.trim()||(existing ? existing.sku : 'EC-'+Date.now().toString().slice(-6));
+            if(products.some(p=>String(p.sku).toLowerCase()===sku.toLowerCase() && String(p.id)!==String(editId))){alert('SKU tersebut sudah digunakan.');return;}
+            const stock=Math.max(0,parseInt(document.getElementById('newProdStock').value)||0);
+            const category=document.getElementById('newProdCategory').value || 'Aksesori';
+            const data={name,sku,category,price:parseFloat(document.getElementById('newProdPrice').value)||0,cost:parseFloat(document.getElementById('newProdCost').value)||0,stock,minStock:Math.max(0,parseInt(document.getElementById('newProdMinStock').value)||0),image:document.getElementById('newProdImage').value.trim(),sizes:document.getElementById('newProdSizes').value.split(',').map(x=>x.trim()).filter(Boolean),colors:document.getElementById('newProdColors').value.split(',').map(x=>x.trim()).filter(Boolean), isManual: true};
+            if (existing) {
+                const before = Math.max(0, Number(existing.stock) || 0);
+                Object.assign(existing, data, {id: existing.id});
+                if (before !== stock) recordStockMovement(existing, 'ADJUST', Math.abs(stock-before), before, stock, 'Pelarasan stok melalui Edit Inventori', {source:'MANUAL_EDIT'});
+                saveProducts(); syncInventoryToGoogleSheet(); closeAddProductModal(); renderCategoryFilterButtons(); renderProducts(); renderInventoryTable();
+                alert(`Maklumat produk ${name} berjaya dikemas kini.`);
+            } else {
+                const id=Date.now();
+                const p={id,...data};
+                products.push(p); saveProducts(); if(stock>0)recordStockMovement(p,'IN',stock,0,stock,'Stok awal / produk baharu', {size:(p.sizes[0]||'Free Size'), color:(p.colors[0]||'Piawai'), source:'OPENING'}); syncInventoryToGoogleSheet(); closeAddProductModal();renderCategoryFilterButtons();renderProducts();renderInventoryTable();alert(`Produk ${name} berjaya ditambah.`);
+            }
         }
 
         // INVENTORI: EKSPORT / IMPORT CSV (format eksport boleh diimport semula)
