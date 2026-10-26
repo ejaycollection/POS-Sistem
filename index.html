@@ -4186,9 +4186,10 @@
                 renderStockManagementHistory(rows); renderStockTally(rows);
                 document.getElementById('stockMgmtHistorySource').textContent='Sumber: Google Sheets ('+rows.length+' rekod)';
             }, function(err){
-                document.getElementById('stockMgmtHistorySource').textContent='Google Sheets gagal dicapai; paparan setempat sahaja.';
-                renderStockManagementHistory(stockMovements); renderStockTally(stockMovements);
-                document.getElementById('stockMgmtTallyNote').textContent='Amaran: paparan ini menggunakan rekod setempat kerana Google Sheets gagal dicapai. Jangan anggap tally setempat sebagai lejar pusat yang lengkap. Ralat: '+err.message;
+                // Jangan paparkan localStorage seolah-olah ia sejarah pusat yang dikongsi antara browser.
+                document.getElementById('stockMgmtHistorySource').textContent='Ralat: sejarah pusat Google Sheets tidak dapat dimuatkan.';
+                document.getElementById('stockMgmtHistoryBody').innerHTML='<tr><td colspan="9" class="p-4 text-center text-red-600">Tidak dapat membaca sejarah pergerakan stok daripada Google Sheets. Semak URL Web App, token API dan deployment Code.gs. Rekod setempat browser tidak dipaparkan sebagai sejarah pusat.</td></tr>';
+                document.getElementById('stockMgmtTallyNote').textContent='Tally tidak dikira kerana lejar pusat gagal dicapai. Ralat: '+err.message;
             });
         }
         function renderStockManagementHistory(rows){
