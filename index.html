@@ -61,22 +61,42 @@
                 visibility: hidden !important;
             }
             
-            /* THERMAL RECEIPT PRINTING */
-            body.print-mode-receipt #printable-receipt, 
+            /* THERMAL RECEIPT PRINTING - CUSTOM PAPER 58mm x 90mm */
+            @page receiptPage {
+                size: 58mm 90mm;
+                margin: 0;
+            }
+            body.print-mode-receipt #printable-receipt,
             body.print-mode-receipt #printable-receipt * {
                 visibility: visible !important;
             }
             body.print-mode-receipt #printable-receipt {
+                page: receiptPage !important;
                 position: absolute !important;
                 left: 0 !important;
                 top: 0 !important;
-                width: 80mm !important;
+                width: 58mm !important;
+                min-height: 90mm !important;
+                box-sizing: border-box !important;
                 color: #000000 !important;
                 background: #ffffff !important;
-                padding: 10px !important;
+                padding: 2mm !important;
+                margin: 0 !important;
+                overflow-wrap: break-word !important;
                 font-family: monospace !important;
-                font-size: 12px !important;
+                font-size: 10px !important;
                 display: block !important;
+            }
+            body.print-mode-receipt #printable-receipt table {
+                width: 100% !important;
+                table-layout: fixed !important;
+                border-collapse: collapse !important;
+            }
+            body.print-mode-receipt #printable-receipt th,
+            body.print-mode-receipt #printable-receipt td {
+                overflow-wrap: anywhere !important;
+                word-break: break-word !important;
+                padding: 1px !important;
             }
             /* INVOIS EJEN / STOKIS - FORMAT STANDARD A4 */
             @page invoicePage { size: A4 portrait; margin: 14mm; }
