@@ -61,42 +61,61 @@
                 visibility: hidden !important;
             }
             
-            /* THERMAL RECEIPT PRINTING - CUSTOM PAPER 58mm x 90mm */
-            @page receiptPage {
-                size: 58mm 90mm;
-                margin: 0;
-            }
-            body.print-mode-receipt #printable-receipt,
+            /* THERMAL RECEIPT PRINTING */
+            body.print-mode-receipt #printable-receipt, 
             body.print-mode-receipt #printable-receipt * {
                 visibility: visible !important;
             }
+            @page receiptPage { size: 58mm auto; margin: 0; }
+            body.print-mode-receipt { page: receiptPage !important; margin: 0 !important; padding: 0 !important; }
             body.print-mode-receipt #printable-receipt {
                 page: receiptPage !important;
                 position: absolute !important;
                 left: 0 !important;
                 top: 0 !important;
                 width: 58mm !important;
-                min-height: 90mm !important;
+                min-height: 0 !important;
+                height: auto !important;
                 box-sizing: border-box !important;
                 color: #000000 !important;
                 background: #ffffff !important;
                 padding: 2mm !important;
                 margin: 0 !important;
-                overflow-wrap: break-word !important;
-                font-family: monospace !important;
-                font-size: 10px !important;
+                font-family: Arial, Helvetica, sans-serif !important;
+                font-size: 12px !important;
+                line-height: 1.35 !important;
                 display: block !important;
+                overflow: visible !important;
+                break-inside: avoid !important;
+                page-break-inside: avoid !important;
+            }
+            body.print-mode-receipt #printable-receipt p,
+            body.print-mode-receipt #printable-receipt td,
+            body.print-mode-receipt #printable-receipt th,
+            body.print-mode-receipt #printable-receipt span {
+                font-size: 12px !important;
+                line-height: 1.35 !important;
+                overflow-wrap: anywhere !important;
+                word-break: normal !important;
             }
             body.print-mode-receipt #printable-receipt table {
                 width: 100% !important;
                 table-layout: fixed !important;
                 border-collapse: collapse !important;
             }
-            body.print-mode-receipt #printable-receipt th,
-            body.print-mode-receipt #printable-receipt td {
-                overflow-wrap: anywhere !important;
-                word-break: break-word !important;
-                padding: 1px !important;
+            body.print-mode-receipt #printable-receipt th:first-child,
+            body.print-mode-receipt #printable-receipt td:first-child { width: 52% !important; }
+            body.print-mode-receipt #printable-receipt th:nth-child(2),
+            body.print-mode-receipt #printable-receipt td:nth-child(2) { width: 12% !important; }
+            body.print-mode-receipt #printable-receipt th:last-child,
+            body.print-mode-receipt #printable-receipt td:last-child { width: 36% !important; }
+            body.print-mode-receipt #printable-receipt #rcpGrandTotal {
+                font-size: 15px !important;
+                font-weight: 800 !important;
+            }
+            body.print-mode-receipt #printable-receipt * {
+                max-width: 100% !important;
+                box-sizing: border-box !important;
             }
             /* INVOIS EJEN / STOKIS - FORMAT STANDARD A4 */
             @page invoicePage { size: A4 portrait; margin: 14mm; }
@@ -508,9 +527,19 @@
                             <i class="fa-solid fa-circle-xmark text-xs"></i>
                         </button>
                     </div>
-                    <select id="barcodeProductSelect" onchange="generateBarcodePreview()" class="w-full p-2 bg-greycair-50 border border-greycair-300 rounded text-xs font-semibold">
-                        <!-- Dynamic options -->
+                    <select id="barcodeProductSelect" onchange="updateBarcodeVariantOptions()" class="w-full p-2 bg-greycair-50 border border-greycair-300 rounded text-xs font-semibold">
+                        <!-- Dynamic product options -->
                     </select>
+                    <div class="grid grid-cols-2 gap-2 mt-2">
+                        <div>
+                            <label class="block text-xs font-bold text-slate-700 mb-1">Saiz:</label>
+                            <select id="barcodeSizeSelect" onchange="generateBarcodePreview()" class="w-full p-2 bg-greycair-50 border border-greycair-300 rounded text-xs font-semibold"></select>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-slate-700 mb-1">Warna:</label>
+                            <select id="barcodeColorSelect" onchange="generateBarcodePreview()" class="w-full p-2 bg-greycair-50 border border-greycair-300 rounded text-xs font-semibold"></select>
+                        </div>
+                    </div>
                 </div>
 
                 <!-- BARCODE PREVIEW BOX -->
@@ -1621,11 +1650,11 @@
         <div style="text-align: center; margin-bottom: 8px;">
             <h2 style="font-size: 16px; font-weight: bold; margin: 0; color: #000;" id="rcpStoreName">EJAY COLLECTION</h2>
             <p style="margin: 2px 0; color: #000; font-size: 11px;" id="rcpStoreWeb">empiredaie.com.my</p>
-            <p style="margin: 2px 0; color: #000; font-size: 10px;" id="rcpStoreAddress">No. 123, Jalan Daie Utama, Pusat Perniagaan Empire, 43000 Kajang, Selangor</p>
-            <p style="margin: 2px 0; color: #000; font-size: 10px;" id="rcpStorePhone">Tel: +6012-345 6789</p>
+            <p style="margin: 2px 0; color: #000; font-size: 12px;" id="rcpStoreAddress">No. 123, Jalan Daie Utama, Pusat Perniagaan Empire, 43000 Kajang, Selangor</p>
+            <p style="margin: 2px 0; color: #000; font-size: 12px;" id="rcpStorePhone">Tel: +6012-345 6789</p>
             <p style="margin: 2px 0; color: #000;">--------------------------------</p>
         </div>
-        <div style="margin-bottom: 8px; color: #000; font-size: 11px;">
+        <div style="margin-bottom: 8px; color: #000; font-size: 12px;">
             <p style="margin: 2px 0;" id="rcpDate">Tarikh: -</p>
             <p style="margin: 2px 0; font-weight: bold;" id="rcpOrderNo">No Resit: #EC-000000-000</p>
             <p style="margin: 2px 0;" id="rcpOrderType">Jenis: Walk-In</p>
@@ -1634,7 +1663,7 @@
             <p style="margin: 2px 0; font-weight: bold;" id="rcpPaymentMethod">Kaedah Bayaran: Tunai</p>
         </div>
         <p style="margin: 2px 0; color: #000;">--------------------------------</p>
-        <table style="width: 100%; text-align: left; margin-bottom: 8px; color: #000; font-size: 11px;">
+        <table style="width: 100%; text-align: left; margin-bottom: 8px; color: #000; font-size: 12px;">
             <thead>
                 <tr>
                     <th style="color: #000;">Item</th>
@@ -1647,14 +1676,14 @@
             </tbody>
         </table>
         <p style="margin: 2px 0; color: #000;">--------------------------------</p>
-        <div style="text-align: right; color: #000; font-size: 11px;">
+        <div style="text-align: right; color: #000; font-size: 12px;">
             <p style="margin: 2px 0;" id="rcpSubtotal">Subtotal: RM 0.00</p>
             <p style="margin: 2px 0;" id="rcpDiscount">Diskaun: RM 0.00</p>
-            <p style="margin: 4px 0; font-weight: bold; font-size: 13px;" id="rcpGrandTotal">JUMLAH BERSIH: RM 0.00</p>
+            <p style="margin: 4px 0; font-weight: bold; font-size: 15px;" id="rcpGrandTotal">JUMLAH BERSIH: RM 0.00</p>
             <p style="margin: 2px 0;" id="rcpTendered">Jumlah Bayar: RM 0.00</p>
             <p style="margin: 2px 0;" id="rcpChange">Baki: RM 0.00</p>
         </div>
-        <div style="text-align: center; margin-top: 15px; color: #000; font-size: 11px;">
+        <div style="text-align: center; margin-top: 10px; color: #000; font-size: 12px;">
             <p style="margin: 2px 0;" id="rcpFooterLine1">Terima Kasih Kerana Membeli!</p>
             <p style="margin: 2px 0; white-space: pre-line;" id="rcpFooterLine2">Jazakumullahu khairan. Sila datang lagi bila-bila masa.</p>
         </div>
@@ -1764,11 +1793,11 @@
 
     <!-- PRINTABLE BARCODE TAG CONTAINER -->
     <div id="printable-barcode" class="hidden">
-        <div style="text-align: center; border: 1px dashed #000; padding: 10px; width: 60mm; margin: 0 auto;">
+        <div style="text-align: center; border: 1px dashed #000; padding: 2mm; width: 54mm; box-sizing: border-box; margin: 0 auto;">
             <div style="font-size: 11px; font-weight: bold;" id="prtBcBoutique">EJAY COLLECTION</div>
             <div style="font-size: 10px; font-weight: bold;" id="prtBcProdName">Nama Produk</div>
-            <div style="font-size: 9px;" id="prtBcDetails">Saiz / Warna</div>
-            <svg id="prtBcCanvas" style="max-width: 100%; height: 40px; margin: 5px auto;"></svg>
+            <div style="font-size: 10px;" id="prtBcDetails">Saiz / Warna</div>
+            <svg id="prtBcCanvas" style="max-width: 100%; height: 38px; margin: 4px auto;"></svg>
             <div style="font-size: 12px; font-weight: bold;" id="prtBcPrice">RM 0.00</div>
         </div>
     </div>
@@ -1938,16 +1967,51 @@
                 const code = e.target.value.trim().toLowerCase();
                 if(!code) return;
 
-                const matched = products.find(p => p.sku.toLowerCase() === code || p.name.toLowerCase() === code);
+                let matched = products.find(p => String(p.sku || '').toLowerCase() === code || String(p.name || '').toLowerCase() === code);
+                let matchedVariant = null;
+
+                if (!matched) {
+                    for (const product of products) {
+                        const variants = getBarcodeVariantValues(product);
+                        const found = variants.find(v => getBarcodeVariantCode(product, v.size, v.color).toLowerCase() === code);
+                        if (found) {
+                            matched = product;
+                            matchedVariant = found;
+                            break;
+                        }
+                    }
+                }
+
                 if (matched) {
-                    addToCart(matched.id);
+                    addToCart(matched.id, matchedVariant);
                     e.target.value = '';
                     filterProducts();
                 }
             }
         }
 
-        // FUNGSI CETAK STIKER BARCODE
+        // FUNGSI CETAK STIKER BARCODE MENGIKUT VARIASI PRODUK
+        function getBarcodeVariantCode(product, size, color) {
+            const clean = value => String(value || '')
+                .trim()
+                .toUpperCase()
+                .replace(/[^A-Z0-9]+/g, '-')
+                .replace(/^-+|-+$/g, '');
+            return [clean(product && product.sku), clean(size || 'FREE-SIZE'), clean(color || 'PIAWAI')]
+                .filter(Boolean).join('-');
+        }
+
+        function getBarcodeVariantValues(product) {
+            const sizes = Array.isArray(product.sizes) && product.sizes.length ? product.sizes : ['Free Size'];
+            const colors = Array.isArray(product.colors) && product.colors.length ? product.colors : ['Piawai'];
+            const variants = [];
+            sizes.forEach(size => colors.forEach(color => variants.push({
+                size: String(size || 'Free Size'),
+                color: String(color || 'Piawai')
+            })));
+            return variants;
+        }
+
         function openBarcodeModal() {
             const searchInput = document.getElementById('barcodeProductSearchInput');
             if (searchInput) searchInput.value = '';
@@ -1957,7 +2021,7 @@
             document.getElementById('barcodeModal').classList.remove('hidden');
         }
 
-        // Carian produk berdasarkan nama atau SKU untuk stiker barcode
+        // Carian produk berdasarkan nama atau SKU untuk stiker barcode.
         function filterBarcodeProducts() {
             const searchInput = document.getElementById('barcodeProductSearchInput');
             const select = document.getElementById('barcodeProductSelect');
@@ -1976,6 +2040,10 @@
             select.innerHTML = '';
             if (!filteredProducts.length) {
                 select.innerHTML = '<option value="">Tiada produk dijumpai</option>';
+                const sizeSelect = document.getElementById('barcodeSizeSelect');
+                const colorSelect = document.getElementById('barcodeColorSelect');
+                if (sizeSelect) sizeSelect.innerHTML = '';
+                if (colorSelect) colorSelect.innerHTML = '';
                 return;
             }
 
@@ -1989,10 +2057,42 @@
             if (filteredProducts.some(p => String(p.id) === String(previousValue))) {
                 select.value = previousValue;
             }
+            updateBarcodeVariantOptions();
+        }
+
+        function updateBarcodeVariantOptions() {
+            const pid = document.getElementById('barcodeProductSelect')?.value;
+            const product = products.find(x => String(x.id) === String(pid));
+            const sizeSelect = document.getElementById('barcodeSizeSelect');
+            const colorSelect = document.getElementById('barcodeColorSelect');
+            if (!product || !sizeSelect || !colorSelect) return;
+
+            const previousSize = sizeSelect.value;
+            const previousColor = colorSelect.value;
+            const sizes = Array.isArray(product.sizes) && product.sizes.length ? product.sizes : ['Free Size'];
+            const colors = Array.isArray(product.colors) && product.colors.length ? product.colors : ['Piawai'];
+
+            sizeSelect.innerHTML = '';
+            colorSelect.innerHTML = '';
+            sizes.forEach(size => {
+                const option = document.createElement('option');
+                option.value = String(size);
+                option.textContent = String(size);
+                sizeSelect.appendChild(option);
+            });
+            colors.forEach(color => {
+                const option = document.createElement('option');
+                option.value = String(color);
+                option.textContent = String(color);
+                colorSelect.appendChild(option);
+            });
+
+            if (sizes.some(v => String(v) === previousSize)) sizeSelect.value = previousSize;
+            if (colors.some(v => String(v) === previousColor)) colorSelect.value = previousColor;
             generateBarcodePreview();
         }
 
-        // Kosongkan teks carian dengan butang X
+        // Kosongkan teks carian dengan butang X.
         function clearBarcodeProductSearch() {
             const searchInput = document.getElementById('barcodeProductSearchInput');
             if (searchInput) {
@@ -2007,39 +2107,53 @@
         }
 
         function generateBarcodePreview() {
-            const pid = document.getElementById('barcodeProductSelect').value;
+            const pid = document.getElementById('barcodeProductSelect')?.value;
             const p = products.find(x => String(x.id) === String(pid));
-            if(!p) return;
+            if (!p) return;
+
+            const size = document.getElementById('barcodeSizeSelect')?.value || 'Free Size';
+            const color = document.getElementById('barcodeColorSelect')?.value || 'Piawai';
+            const variantCode = getBarcodeVariantCode(p, size, color);
 
             document.getElementById('bcPreviewName').innerText = receiptSettings.name;
-            document.getElementById('bcPreviewDetails').innerText = `${p.name} (${p.sku})`;
-            document.getElementById('bcPreviewPrice').innerText = `RM ${p.price.toFixed(2)}`;
+            document.getElementById('bcPreviewDetails').innerText = `${p.name} | Saiz: ${size} | Warna: ${color}`;
+            document.getElementById('bcPreviewPrice').innerText = `RM ${Number(p.price || 0).toFixed(2)}`;
 
-            JsBarcode("#barcodeCanvas", p.sku, {
+            JsBarcode("#barcodeCanvas", variantCode, {
                 format: "CODE128",
-                width: 2,
+                width: 1.7,
                 height: 45,
-                displayValue: true
+                displayValue: true,
+                fontSize: 11,
+                margin: 2
             });
         }
 
         function printBarcodeTag() {
-            const pid = document.getElementById('barcodeProductSelect').value;
+            const pid = document.getElementById('barcodeProductSelect')?.value;
             const p = products.find(x => String(x.id) === String(pid));
-            if(!p) return;
+            if (!p) {
+                alert('Sila pilih produk untuk cetakan barcode.');
+                return;
+            }
+
+            const size = document.getElementById('barcodeSizeSelect')?.value || 'Free Size';
+            const color = document.getElementById('barcodeColorSelect')?.value || 'Piawai';
+            const variantCode = getBarcodeVariantCode(p, size, color);
 
             document.body.className = "bg-greycair-100 text-slate-800 min-h-screen flex flex-col print-mode-barcode";
-
             document.getElementById('prtBcBoutique').innerText = receiptSettings.name;
             document.getElementById('prtBcProdName').innerText = p.name;
-            document.getElementById('prtBcDetails').innerText = `SKU: ${p.sku}`;
-            document.getElementById('prtBcPrice').innerText = `RM ${p.price.toFixed(2)}`;
+            document.getElementById('prtBcDetails').innerText = `Saiz: ${size} | Warna: ${color} | Kod: ${variantCode}`;
+            document.getElementById('prtBcPrice').innerText = `RM ${Number(p.price || 0).toFixed(2)}`;
 
-            JsBarcode("#prtBcCanvas", p.sku, {
+            JsBarcode("#prtBcCanvas", variantCode, {
                 format: "CODE128",
-                width: 1.8,
+                width: 1.5,
                 height: 35,
-                displayValue: true
+                displayValue: true,
+                fontSize: 10,
+                margin: 1
             });
 
             window.print();
@@ -3006,11 +3120,11 @@
             sendNext();
         }
 
-        function addToCart(productId) {
+        function addToCart(productId, scannedVariant = null) {
             const product = products.find(p => String(p.id) === String(productId));
             if (!product) return;
-            const selectedSize = document.getElementById(`size_select_${productId}`)?.value || 'Free Size';
-            const selectedColor = document.getElementById(`color_select_${productId}`)?.value || 'Piawai';
+            const selectedSize = scannedVariant?.size || document.getElementById(`size_select_${productId}`)?.value || 'Free Size';
+            const selectedColor = scannedVariant?.color || document.getElementById(`color_select_${productId}`)?.value || 'Piawai';
             const cartItemId = `${productId}-${selectedSize}-${selectedColor}`;
             const existing = cart.find(item => item.cartItemId === cartItemId);
             const variantStock = getVariantStock(product, selectedSize, selectedColor);
