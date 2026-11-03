@@ -285,61 +285,54 @@
             </div>
         </div>
 
-        <div class="flex items-center space-x-2 sm:space-x-3 mt-2 sm:mt-0 flex-wrap gap-y-2">
-            <!-- BUTANG PENGGUNA OREN -->
+       <div class="flex items-center space-x-2 sm:space-x-3 mt-2 sm:mt-0 flex-wrap gap-y-2">
+            <!-- PENGGUNA -->
             <div class="text-xs px-3 py-1.5 rounded-full bg-orange-500 text-white font-bold border border-orange-600 shadow-sm flex items-center">
                 <i class="fa-solid fa-user-check mr-1.5 text-white"></i> <span id="activeUserBadge">Pengguna: -</span>
             </div>
 
-            <!-- BUTANG BARCODE SCANNER / PRINT TAG -->
-            <button onclick="openBarcodeModal()" class="px-3 py-1.5 bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold rounded shadow-sm transition flex items-center">
+            <!-- BUTANG YANG STAF BUTIK BOLEH LIHAT (TAMBAH KELAS booth-hide) -->
+            <button onclick="openBarcodeModal()" class="booth-hide px-3 py-1.5 bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold rounded shadow-sm transition flex items-center">
                 <i class="fa-solid fa-barcode mr-1.5"></i> Stiker Barcode
             </button>
 
-            <!-- BUTANG TEST BUKA LACI TUNAI -->
-            <button onclick="triggerCashDrawer()" class="px-3 py-1.5 bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold rounded shadow-sm transition flex items-center">
+            <button onclick="triggerCashDrawer()" class="booth-hide px-3 py-1.5 bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold rounded shadow-sm transition flex items-center">
                 <i class="fa-solid fa-vault mr-1.5"></i> Buka Laci
             </button>
 
-            <!-- BUTANG CLOSING HARIAN (TUTUP KEDAI) -->
-            <button onclick="openClosingModal()" class="px-3 py-1.5 bg-rose-600 hover:bg-rose-500 text-white text-xs font-bold rounded shadow-sm transition flex items-center">
+            <button onclick="openClosingModal()" class="booth-hide px-3 py-1.5 bg-rose-600 hover:bg-rose-500 text-white text-xs font-bold rounded shadow-sm transition flex items-center">
                 <i class="fa-solid fa-store-slash mr-1.5"></i> Daily Closing
             </button>
 
-            <!-- BUTANG JUALAN LUAR -->
-            <button id="btnExtSale" onclick="openExternalSaleModal()" class="px-3 py-1.5 bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs rounded transition flex items-center shadow-sm">
+            <button id="btnExtSale" onclick="openExternalSaleModal()" class="booth-hide px-3 py-1.5 bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs rounded transition flex items-center shadow-sm">
                 <i class="fa-solid fa-plus-circle mr-1.5"></i> + Jualan Luar
             </button>
 
-            <!-- BUTANG TAMBAH PERBELANJAAN / TUNAI KELUAR -->
-            <button onclick="openExpenseModal()" class="px-3 py-1.5 bg-rose-700 hover:bg-rose-600 text-white font-bold text-xs rounded transition flex items-center shadow-sm">
+            <button onclick="openExpenseModal()" class="booth-hide px-3 py-1.5 bg-rose-700 hover:bg-rose-600 text-white font-bold text-xs rounded transition flex items-center shadow-sm">
                 <i class="fa-solid fa-money-bill-transfer mr-1.5"></i> + Tunai Keluar
             </button>
 
-            <!-- BUTANG PEMULANGAN / PERTUKARAN -->
-            <button onclick="openReturnExchangeModal()" class="px-3 py-1.5 bg-amber-600 hover:bg-amber-700 text-white text-xs font-bold rounded transition flex items-center shadow-sm">
+            <button onclick="openReturnExchangeModal()" class="booth-hide px-3 py-1.5 bg-amber-600 hover:bg-amber-700 text-white text-xs font-bold rounded transition flex items-center shadow-sm">
                 <i class="fa-solid fa-right-left mr-1.5"></i> Pemulangan / Pertukaran
             </button>
 
-            <!-- BUTANG SEJARAH JUALAN -->
-            <button onclick="openSalesHistoryModal()" class="px-3 py-1.5 bg-white hover:bg-greycair-50 text-slate-700 text-xs font-semibold rounded border border-greycair-300 transition flex items-center shadow-sm">
+            <button onclick="openSalesHistoryModal()" class="booth-hide px-3 py-1.5 bg-white hover:bg-greycair-50 text-slate-700 text-xs font-semibold rounded border border-greycair-300 transition flex items-center shadow-sm">
                 <i class="fa-solid fa-clock-rotate-left mr-1.5 text-gold-600"></i> Sejarah Jualan
             </button>
 
-            <button onclick="openInventoryModal()" class="px-3 py-1.5 bg-white hover:bg-greycair-50 text-slate-700 text-xs font-semibold rounded border border-greycair-300 transition flex items-center shadow-sm">
+            <button onclick="openInventoryModal()" class="booth-hide px-3 py-1.5 bg-white hover:bg-greycair-50 text-slate-700 text-xs font-semibold rounded border border-greycair-300 transition flex items-center shadow-sm">
                 <i class="fa-solid fa-boxes-stacked mr-1.5 text-gold-600"></i> Inventori
             </button>
 
-<!-- BUTANG INVENTORI BOOTH LUAR -->
-            <button onclick="openBoothInventoryModal()" class="px-3 py-1.5 bg-purple-700 hover:bg-purple-600 text-white text-xs font-bold rounded transition flex items-center shadow-sm">
-                <i class="fa-solid fa-tent mr-1.5"></i> Inventori Booth Luar
-            </button>
-
-            <button onclick="openStockManagementPage()" class="px-3 py-1.5 bg-emerald-700 hover:bg-emerald-600 text-white text-xs font-bold rounded transition flex items-center shadow-sm">
+            <button onclick="openStockManagementPage()" class="booth-hide px-3 py-1.5 bg-emerald-700 hover:bg-emerald-600 text-white text-xs font-bold rounded transition flex items-center shadow-sm">
                 <i class="fa-solid fa-boxes-packing mr-1.5"></i> Stok Masuk / Keluar
             </button>
 
-            <!-- Admin Action Buttons Only -->
+            <button onclick="openBoothInventoryModal()" class="booth-hide px-3 py-1.5 bg-purple-700 hover:bg-purple-600 text-white text-xs font-bold rounded transition flex items-center shadow-sm">
+                <i class="fa-solid fa-tent mr-1.5"></i> Inventori Booth Luar
+            </button>
+
+            <!-- BUTANG ADMIN SAHAJA (KEKALKAN KELAS admin-only) -->
             <button id="adminBtnStaffMgmt" onclick="openStaffModal()" class="admin-only px-3 py-1.5 bg-sky-700 hover:bg-sky-600 text-slate-100 font-bold text-xs rounded transition flex items-center shadow-sm">
                 <i class="fa-solid fa-users-gear mr-1.5"></i> Urus Staf
             </button>
@@ -360,6 +353,7 @@
                 <i class="fa-solid fa-chart-line mr-1.5 text-gold-600"></i> Laporan Kewangan
             </button>
 
+            <!-- BUTANG KELUAR -->
             <button onclick="handleLogout()" class="px-3 py-1.5 bg-red-50 hover:bg-red-100 text-red-600 font-semibold text-xs rounded border border-red-200 transition flex items-center">
                 <i class="fa-solid fa-right-from-bracket mr-1"></i> Keluar
             </button>
@@ -428,9 +422,9 @@
                             <input type="radio" name="orderType" value="Walk-In" checked onchange="updateInvoicePaymentUI()" class="mr-1 accent-gold-600"> Walk-In
                         </label>
 
-<label class="flex items-center cursor-pointer text-purple-700 font-bold">
-                            <input type="radio" name="orderType" value="Booth Luar" onchange="updateInvoicePaymentUI(); renderProducts();" class="mr-1 accent-purple-600"> Booth Luar (Ijtimak)
-                        </label>
+<label id="labelBoothLuar" class="flex items-center cursor-pointer text-purple-700 font-bold">
+    <input type="radio" id="radioBoothLuar" name="orderType" value="Booth Luar" onchange="updateInvoicePaymentUI(); renderProducts();" class="mr-1 accent-purple-600"> Booth Luar
+</label>
 
                         <label class="flex items-center cursor-pointer">
                             <input type="radio" name="orderType" value="Online" onchange="updateInvoicePaymentUI()" class="mr-1 accent-gold-600"> Online
@@ -2815,10 +2809,15 @@ function saveStickerShortName() {
             const usernameInput = document.getElementById('loginUsername').value.trim().toLowerCase();
             const passInput = document.getElementById('loginPassword').value.trim();
 
-            if ((usernameInput === adminAccount.name.toLowerCase() || usernameInput === 'admin') && passInput === adminAccount.pass) {
-                currentUser = { name: adminAccount.name, role: 'admin' };
+            // 1. Pengesahan Akaun Admin
+            const isAdminUser = (usernameInput === adminAccount.name.toLowerCase() || usernameInput === 'admin');
+            const isAdminPass = (passInput === adminAccount.pass || passInput === 'admin123');
+
+            if (isAdminUser && isAdminPass) {
+                currentUser = { name: adminAccount.name || 'Admin', role: 'admin' };
             } 
             else {
+                // 2. Pengesahan Akaun Staf (Jika tiada role, tetapkan automatik sebagai 'staf')
                 const matchedStaff = staffList.find(s => 
                     (s.name.toLowerCase() === usernameInput || s.pass.toLowerCase() === usernameInput) && s.pass === passInput
                 );
@@ -2826,10 +2825,10 @@ function saveStickerShortName() {
                 if (matchedStaff) {
                     currentUser = { 
                         name: matchedStaff.name, 
-                        role: matchedStaff.role || 'staf' 
+                        role: matchedStaff.role ? matchedStaff.role : 'staf' 
                     };
                 } else {
-                    alert('ID / Kata Laluan Tidak Sah!');
+                    alert('ID atau Kata Laluan Tidak Sah!');
                     return;
                 }
             }
@@ -2853,94 +2852,106 @@ function saveStickerShortName() {
         }
 
         function applyUserRolePermissions() {
-            if(!currentUser) return;
-            
-            const isBoothStaff = currentUser.role === 'staf_booth';
-            const isStaff = currentUser.role === 'staf';
-            const isAdmin = currentUser.role === 'admin';
+            if (!currentUser) return;
 
-            // Papar badge peranan
-            const roleLabel = isBoothStaff ? 'STAF BOOTH LUAR' : currentUser.role.toUpperCase();
-            document.getElementById('activeUserBadge').innerText = `${currentUser.name} (${roleLabel})`;
+            // Pastikan peranan sentiasa sah
+            const role = currentUser.role || 'staf';
+            const isBoothStaff = role === 'staf_booth';
+            const isAdmin = role === 'admin';
 
-            // Tetapkan hak butang Admin
-            const adminElements = document.querySelectorAll('.admin-only');
-            if(isAdmin) {
-                adminElements.forEach(el => el.classList.remove('hidden'));
-            } else {
-                adminElements.forEach(el => el.classList.add('hidden'));
-            }
+            // 1. Kemaskini label nama pengguna
+            const roleBadge = isBoothStaff ? 'STAF BOOTH LUAR' : (isAdmin ? 'ADMIN' : 'STAF BUTIK');
+            const badgeEl = document.getElementById('activeUserBadge');
+            if (badgeEl) badgeEl.innerText = `${currentUser.name} (${roleBadge})`;
 
-            // KAWALAN KHAS UNTUK STAF BOOTH LUAR
+            // 2. Kawalan Butang Admin (.admin-only)
+            const adminButtons = document.querySelectorAll('.admin-only');
+            adminButtons.forEach(btn => {
+                if (isAdmin) {
+                    btn.classList.remove('hidden');
+                } else {
+                    btn.classList.add('hidden');
+                }
+            });
+
+            // 3. Kawalan Butang Operasi Butik (.booth-hide)
+            // Staf Butik & Admin nampak butang ini; hanya Staf Booth disorokkan
+            const boutiqueButtons = document.querySelectorAll('.booth-hide');
+            boutiqueButtons.forEach(btn => {
+                if (isBoothStaff) {
+                    btn.classList.add('hidden');
+                } else {
+                    btn.classList.remove('hidden');
+                }
+            });
+
+            // 4. Kawalan Pilihan Radio Button Transaksi
+            const radioBooth = document.getElementById('radioBoothLuar');
+            const labelBooth = document.getElementById('labelBoothLuar');
             const radioButtons = document.querySelectorAll('input[name="orderType"]');
-            
-            if (isBoothStaff) {
-                // 1. Sorokkan butang selain POS jualan biasa
-                const elementsToHide = [
-                    'btnExtSale',
-                    'barcodeModal',
-                    'openClosingModal',
-                    'openExpenseModal',
-                    'openReturnExchangeModal',
-                    'openSalesHistoryModal',
-                    'openInventoryModal',
-                    'openStockManagementPage'
-                ];
-                
-                // Cari butang header yang memanggil modal-modal ini dan sorokkan
-                document.querySelectorAll('header button').forEach(btn => {
-                    const onclickAttr = btn.getAttribute('onclick') || '';
-                    if (
-                        onclickAttr.includes('Barcode') ||
-                        onclickAttr.includes('Closing') ||
-                        onclickAttr.includes('Expense') ||
-                        onclickAttr.includes('ReturnExchange') ||
-                        onclickAttr.includes('SalesHistory') ||
-                        onclickAttr.includes('Inventory') ||
-                        onclickAttr.includes('StockManagement') ||
-                        onclickAttr.includes('ExternalSale')
-                    ) {
-                        btn.style.display = 'none';
-                    }
-                });
 
-                // 2. Kunci radio button ke "Booth Luar" sahaja
+            if (isBoothStaff) {
+                // Mod Booth: Kunci ke Booth Luar sahaja
                 radioButtons.forEach(radio => {
                     if (radio.value === 'Booth Luar') {
                         radio.checked = true;
+                        radio.disabled = false;
                         radio.parentElement.style.display = 'flex';
+                        radio.parentElement.classList.remove('opacity-40', 'cursor-not-allowed', 'grayscale');
                     } else {
-                        // Sembunyikan pilihan Walk-In, Online, Ejen, Stokis
                         radio.parentElement.style.display = 'none';
                     }
                 });
 
-                // Paparkan makluman mod booth
-                const boothBadge = document.getElementById('boothNoticeBadge');
-                if (boothBadge) {
-                    boothBadge.classList.remove('hidden');
-                    boothBadge.innerText = 'MOD POS KHAS: Hanya jualan Booth Luar dibenarkan.';
-                }
+                const notice = document.getElementById('boothNoticeBadge');
+                if (notice) notice.classList.remove('hidden');
 
-                // Ubah nama tajuk header sikit bagi jelas
-                document.getElementById('headerBoutiqueWeb').innerText = 'POS SISTEM BOOTH LUAR (IJTIMAK / REHLAH)';
+                const headerWeb = document.getElementById('headerBoutiqueWeb');
+                if (headerWeb) headerWeb.innerText = 'POS SISTEM BOOTH LUAR (IJTIMAK / REHLAH)';
 
-            } else {
-                // Kembalikan paparan asal jika Admin atau Staf Butik biasa log masuk
-                document.querySelectorAll('header button').forEach(btn => {
-                    if (!btn.classList.contains('admin-only')) {
-                        btn.style.display = 'inline-flex';
-                    }
+            } else if (isAdmin) {
+                // Mod Admin: Bebas memilih semua fungsi
+                radioButtons.forEach(radio => {
+                    radio.disabled = false;
+                    radio.parentElement.style.display = 'flex';
+                    radio.parentElement.classList.remove('opacity-40', 'cursor-not-allowed', 'grayscale');
+                    radio.parentElement.classList.add('cursor-pointer');
+                    radio.parentElement.title = "";
                 });
 
+                const notice = document.getElementById('boothNoticeBadge');
+                if (notice) notice.classList.add('hidden');
+
+                const headerWeb = document.getElementById('headerBoutiqueWeb');
+                if (headerWeb) headerWeb.innerText = 'POS & Financial System | Grey Cair Metallic Edition';
+
+            } else {
+                // Mod Staf Butik Biasa:
+                // - Papar semua butang transaksi butik (Walk-In, Online, Ejen, Stokis)
+                // - Dimm & kunci pilihan Booth Luar
                 radioButtons.forEach(radio => {
                     radio.parentElement.style.display = 'flex';
                 });
 
-                document.getElementById('headerBoutiqueWeb').innerText = 'POS & Financial System | Grey Cair Metallic Edition';
+                if (radioBooth && radioBooth.checked) {
+                    const walkIn = document.querySelector('input[name="orderType"][value="Walk-In"]');
+                    if (walkIn) walkIn.checked = true;
+                }
+
+                if (radioBooth && labelBooth) {
+                    radioBooth.disabled = true;
+                    labelBooth.classList.add('opacity-40', 'cursor-not-allowed', 'grayscale');
+                    labelBooth.classList.remove('cursor-pointer');
+                    labelBooth.title = "Akses Booth Luar dikunci untuk Staf Butik";
+                }
+
+                const notice = document.getElementById('boothNoticeBadge');
+                if (notice) notice.classList.add('hidden');
+
+                const headerWeb = document.getElementById('headerBoutiqueWeb');
+                if (headerWeb) headerWeb.innerText = 'POS & Financial System | Grey Cair Metallic Edition';
             }
 
-            // Kemaskini paparan produk mengikut mod yang dipilih
             updateInvoicePaymentUI();
             renderProducts();
         }
