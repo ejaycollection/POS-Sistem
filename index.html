@@ -820,9 +820,13 @@
 
             <div class="my-3 bg-greycair-50 p-3 rounded-lg border border-greycair-200 space-y-2">
                 <p class="text-xs text-sky-700 font-bold uppercase tracking-wider">+ Tambah Akaun Staf Baharu</p>
-                <div class="grid grid-cols-2 gap-2">
-                    <input type="text" id="newStaffName" placeholder="Nama Staf (cth: Tiza)" class="px-2.5 py-1.5 bg-white border border-greycair-300 rounded text-xs text-slate-800 focus:outline-none focus:border-sky-500">
-                    <input type="text" id="newStaffPass" placeholder="Kata Laluan / ID Akses" class="px-2.5 py-1.5 bg-white border border-greycair-300 rounded text-xs text-slate-800 focus:outline-none focus:border-sky-500">
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-2">
+                    <input type="text" id="newStaffName" placeholder="Nama Staf (cth: Staf Booth 1)" class="px-2.5 py-1.5 bg-white border border-greycair-300 rounded text-xs text-slate-800 focus:outline-none focus:border-sky-500">
+                    <input type="text" id="newStaffPass" placeholder="Kata Laluan / ID" class="px-2.5 py-1.5 bg-white border border-greycair-300 rounded text-xs text-slate-800 focus:outline-none focus:border-sky-500">
+                    <select id="newStaffRole" class="px-2.5 py-1.5 bg-white border border-greycair-300 rounded text-xs text-slate-800 focus:outline-none focus:border-sky-500 font-bold">
+                        <option value="staf">Staf Butik</option>
+                        <option value="staf_booth">Staf Booth Luar</option>
+                    </select>
                 </div>
                 <button onclick="addNewStaffAccount()" class="w-full py-1.5 bg-sky-600 hover:bg-sky-500 text-white font-bold text-xs rounded shadow-sm transition">
                     Simpan Akaun Staf
@@ -836,6 +840,7 @@
                         <tr>
                             <th class="p-2">Nama Staf</th>
                             <th class="p-2">ID Akses</th>
+                            <th class="p-2">Peranan</th>
                             <th class="p-2 text-center">Tindakan</th>
                         </tr>
                     </thead>
@@ -1970,9 +1975,8 @@
         };
 
         let defaultStaffAccounts = [
-            { name: 'Staf 1 (Ahmad)', pass: 'staf123' },
-            { name: 'Staf 2 (Siti)', pass: 'staf456' },
-            { name: 'Staf 3 (Farhan)', pass: 'staf789' }
+            { name: 'Staf 1 (Ahmad)', pass: 'staf123', role: 'staf' },
+            { name: 'Staf Booth (Ijtimak)', pass: 'booth123', role: 'staf_booth' }
         ];
 
         let staffList = defaultStaffAccounts;
@@ -2820,9 +2824,12 @@ function saveStickerShortName() {
                 );
 
                 if (matchedStaff) {
-                    currentUser = { name: matchedStaff.name, role: 'staf' };
+                    currentUser = { 
+                        name: matchedStaff.name, 
+                        role: matchedStaff.role || 'staf' 
+                    };
                 } else {
-                    alert('ID / Nama Pengguna atau Kata Laluan Tidak Sah!\n\n- Akaun Admin: Gunakan ID Admin sah.\n- Akaun Staf: Nama/ID mesti didaftarkan oleh Admin terlebih dahulu.');
+                    alert('ID / Kata Laluan Tidak Sah!');
                     return;
                 }
             }
@@ -2847,14 +2854,95 @@ function saveStickerShortName() {
 
         function applyUserRolePermissions() {
             if(!currentUser) return;
-            document.getElementById('activeUserBadge').innerText = `${currentUser.name} (${currentUser.role.toUpperCase()})`;
+            
+            const isBoothStaff = currentUser.role === 'staf_booth';
+            const isStaff = currentUser.role === 'staf';
+            const isAdmin = currentUser.role === 'admin';
 
+            // Papar badge peranan
+            const roleLabel = isBoothStaff ? 'STAF BOOTH LUAR' : currentUser.role.toUpperCase();
+            document.getElementById('activeUserBadge').innerText = `${currentUser.name} (${roleLabel})`;
+
+            // Tetapkan hak butang Admin
             const adminElements = document.querySelectorAll('.admin-only');
-            if(currentUser.role === 'staf') {
-                adminElements.forEach(el => el.classList.add('hidden'));
-            } else {
+            if(isAdmin) {
                 adminElements.forEach(el => el.classList.remove('hidden'));
+            } else {
+                adminElements.forEach(el => el.classList.add('hidden'));
             }
+
+            // KAWALAN KHAS UNTUK STAF BOOTH LUAR
+            const radioButtons = document.querySelectorAll('input[name="orderType"]');
+            
+            if (isBoothStaff) {
+                // 1. Sorokkan butang selain POS jualan biasa
+                const elementsToHide = [
+                    'btnExtSale',
+                    'barcodeModal',
+                    'openClosingModal',
+                    'openExpenseModal',
+                    'openReturnExchangeModal',
+                    'openSalesHistoryModal',
+                    'openInventoryModal',
+                    'openStockManagementPage'
+                ];
+                
+                // Cari butang header yang memanggil modal-modal ini dan sorokkan
+                document.querySelectorAll('header button').forEach(btn => {
+                    const onclickAttr = btn.getAttribute('onclick') || '';
+                    if (
+                        onclickAttr.includes('Barcode') ||
+                        onclickAttr.includes('Closing') ||
+                        onclickAttr.includes('Expense') ||
+                        onclickAttr.includes('ReturnExchange') ||
+                        onclickAttr.includes('SalesHistory') ||
+                        onclickAttr.includes('Inventory') ||
+                        onclickAttr.includes('StockManagement') ||
+                        onclickAttr.includes('ExternalSale')
+                    ) {
+                        btn.style.display = 'none';
+                    }
+                });
+
+                // 2. Kunci radio button ke "Booth Luar" sahaja
+                radioButtons.forEach(radio => {
+                    if (radio.value === 'Booth Luar') {
+                        radio.checked = true;
+                        radio.parentElement.style.display = 'flex';
+                    } else {
+                        // Sembunyikan pilihan Walk-In, Online, Ejen, Stokis
+                        radio.parentElement.style.display = 'none';
+                    }
+                });
+
+                // Paparkan makluman mod booth
+                const boothBadge = document.getElementById('boothNoticeBadge');
+                if (boothBadge) {
+                    boothBadge.classList.remove('hidden');
+                    boothBadge.innerText = 'MOD POS KHAS: Hanya jualan Booth Luar dibenarkan.';
+                }
+
+                // Ubah nama tajuk header sikit bagi jelas
+                document.getElementById('headerBoutiqueWeb').innerText = 'POS SISTEM BOOTH LUAR (IJTIMAK / REHLAH)';
+
+            } else {
+                // Kembalikan paparan asal jika Admin atau Staf Butik biasa log masuk
+                document.querySelectorAll('header button').forEach(btn => {
+                    if (!btn.classList.contains('admin-only')) {
+                        btn.style.display = 'inline-flex';
+                    }
+                });
+
+                radioButtons.forEach(radio => {
+                    radio.parentElement.style.display = 'flex';
+                });
+
+                document.getElementById('headerBoutiqueWeb').innerText = 'POS & Financial System | Grey Cair Metallic Edition';
+            }
+
+            // Kemaskini paparan produk mengikut mod yang dipilih
+            updateInvoicePaymentUI();
+            renderProducts();
         }
 
         function handleLogout() {
@@ -3037,10 +3125,15 @@ function saveStickerShortName() {
             tbody.innerHTML = '';
 
             staffList.forEach((s, index) => {
+                const roleBadge = s.role === 'staf_booth' 
+                    ? '<span class="px-2 py-0.5 bg-purple-100 text-purple-700 font-bold rounded text-[10px]">Staf Booth</span>'
+                    : '<span class="px-2 py-0.5 bg-slate-100 text-slate-700 font-semibold rounded text-[10px]">Staf Butik</span>';
+
                 tbody.innerHTML += `
                     <tr>
                         <td class="p-2 font-semibold text-slate-800">${s.name}</td>
                         <td class="p-2 font-mono text-gold-700">${s.pass}</td>
+                        <td class="p-2">${roleBadge}</td>
                         <td class="p-2 text-center">
                             <button onclick="deleteStaffAccount(${index})" class="text-red-500 hover:text-red-700"><i class="fa-solid fa-trash-can"></i></button>
                         </td>
@@ -3052,18 +3145,19 @@ function saveStickerShortName() {
         function addNewStaffAccount() {
             const name = document.getElementById('newStaffName').value.trim();
             const pass = document.getElementById('newStaffPass').value.trim();
+            const role = document.getElementById('newStaffRole').value;
 
             if(!name || !pass) {
                 alert('Sila lengkapkan nama staf dan ID akses.');
                 return;
             }
 
-            staffList.push({ name, pass });
+            staffList.push({ name, pass, role });
             saveSettingsToGSheet('staffList', staffList, function() {
                 document.getElementById('newStaffName').value = '';
                 document.getElementById('newStaffPass').value = '';
                 renderStaffTable();
-                alert(`Akaun untuk ${name} berjaya ditambah & disimpan ke Google Sheet!`);
+                alert(`Akaun untuk ${name} (${role === 'staf_booth' ? 'Booth Luar' : 'Butik'}) berjaya disimpan!`);
             });
         }
 
