@@ -1693,44 +1693,51 @@
     </div>
 
 <!-- MODAL: INVENTORI KHAS BOOTH LUAR (IJTIMAK / REHLAH) -->
+    <!-- MODAL: INVENTORI KHAS BOOTH LUAR (IJTIMAK / REHLAH) -->
     <div id="boothInventoryModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-[70] hidden items-center justify-center p-3 md:p-5">
         <div class="bg-white border border-purple-500/50 w-full max-w-5xl rounded-2xl shadow-2xl flex flex-col max-h-[94vh]">
-            <div class="px-5 py-4 border-b border-greycair-200 flex justify-between items-center bg-purple-50 rounded-t-2xl">
+            <div class="px-5 py-3.5 border-b border-greycair-200 flex justify-between items-center bg-purple-50 rounded-t-2xl">
                 <div>
-                    <h3 class="font-heading font-bold text-purple-800 text-lg flex items-center">
-                        <i class="fa-solid fa-tent mr-2"></i> Inventori Khas Booth Luar (Program / Tapak)
+                    <h3 class="font-heading font-bold text-purple-800 text-base md:text-lg flex items-center">
+                        <i class="fa-solid fa-tent mr-2"></i> Pengurusan Inventori Booth Luar (Tapak / Ijtimak)
                     </h3>
-                    <p class="text-xs text-slate-500">Khas untuk rekod baki stok barang yang dibawa keluar ke booth Ijtimak/Rehlah tanpa mengganggu stok butik.</p>
+                    <p class="text-xs text-slate-500">Stok khas dibawa ke tapak program, berasingan sepenuhnya daripada stok kedai/butik.</p>
                 </div>
                 <button onclick="closeBoothInventoryModal()" class="text-slate-400 hover:text-slate-600"><i class="fa-solid fa-xmark text-xl"></i></button>
             </div>
 
             <div class="p-4 overflow-y-auto space-y-4">
-                <!-- BORANG TAMBAH / SET STOK BOOTH -->
-                <div class="p-4 bg-purple-50/60 border border-purple-200 rounded-xl space-y-3">
-                    <h4 class="text-xs font-bold text-purple-900 uppercase tracking-wider flex items-center">
-                        <i class="fa-solid fa-box-open mr-1.5"></i> Bawa Barang Ke Booth / Kemaskini Baki Booth
-                    </h4>
+                <!-- BORANG TAMBAH / EDIT STOK BOOTH -->
+                <div class="p-3.5 bg-purple-50/60 border border-purple-200 rounded-xl space-y-3">
+                    <div class="flex justify-between items-center">
+                        <h4 id="boothFormTitle" class="text-xs font-bold text-purple-900 uppercase tracking-wider flex items-center">
+                            <i class="fa-solid fa-box-open mr-1.5"></i> Tambah / Kemaskini Stok Booth
+                        </h4>
+                        <button id="boothCancelEditBtn" onclick="cancelBoothEdit()" class="hidden text-xs text-red-600 hover:text-red-800 font-bold">
+                            <i class="fa-solid fa-circle-xmark mr-1"></i> Batal Edit
+                        </button>
+                    </div>
+
                     <div class="grid grid-cols-1 sm:grid-cols-4 gap-2">
                         <div class="sm:col-span-2">
                             <label class="block text-[11px] font-semibold text-slate-700 mb-1">Pilih Produk:</label>
-                            <select id="boothProdSelect" onchange="populateBoothVariantOptions()" class="w-full px-2.5 py-1.5 bg-white border border-greycair-300 rounded text-xs text-slate-800"></select>
+                            <select id="boothProdSelect" onchange="populateBoothVariantOptions()" class="w-full px-2.5 py-1.5 bg-white border border-greycair-300 rounded text-xs text-slate-800 font-medium"></select>
                         </div>
                         <div>
                             <label class="block text-[11px] font-semibold text-slate-700 mb-1">Saiz / Volume:</label>
-                            <select id="boothSizeSelect" onchange="updateBoothCurrentStockHint()" class="w-full px-2.5 py-1.5 bg-white border border-greycair-300 rounded text-xs text-slate-800"></select>
+                            <select id="boothSizeSelect" onchange="updateBoothCurrentStockHint()" class="w-full px-2.5 py-1.5 bg-white border border-greycair-300 rounded text-xs text-slate-800 font-medium"></select>
                         </div>
                         <div>
                             <label class="block text-[11px] font-semibold text-slate-700 mb-1">Warna / Bau:</label>
-                            <select id="boothColorSelect" onchange="updateBoothCurrentStockHint()" class="w-full px-2.5 py-1.5 bg-white border border-greycair-300 rounded text-xs text-slate-800"></select>
+                            <select id="boothColorSelect" onchange="updateBoothCurrentStockHint()" class="w-full px-2.5 py-1.5 bg-white border border-greycair-300 rounded text-xs text-slate-800 font-medium"></select>
                         </div>
                     </div>
 
-                    <div class="flex flex-col sm:flex-row items-end justify-between gap-3 pt-2">
+                    <div class="flex flex-col sm:flex-row items-end justify-between gap-3 pt-1">
                         <div class="flex items-center space-x-2">
                             <div>
-                                <label class="block text-[11px] font-semibold text-slate-700 mb-1">Kuantiti Unit:</label>
-                                <input type="number" id="boothQtyInput" min="1" value="5" class="w-28 px-3 py-1.5 bg-white border border-greycair-300 rounded text-xs font-bold text-slate-800">
+                                <label class="block text-[11px] font-semibold text-slate-700 mb-1">Kuantiti:</label>
+                                <input type="number" id="boothQtyInput" min="0" value="5" class="w-28 px-3 py-1.5 bg-white border border-greycair-300 rounded text-xs font-bold text-slate-800">
                             </div>
                             <div class="pt-5">
                                 <span id="boothStockHint" class="text-xs font-semibold text-slate-600 bg-white px-2.5 py-1.5 rounded border border-greycair-200 block">Stok Booth Semasa: 0 unit</span>
@@ -1738,24 +1745,46 @@
                         </div>
 
                         <div class="space-x-2 flex">
-                            <button onclick="saveBoothStockAction('ADD')" class="px-4 py-2 bg-purple-700 hover:bg-purple-600 text-white rounded text-xs font-bold shadow-sm">
-                                <i class="fa-solid fa-plus mr-1"></i> Tambah Ke Booth
+                            <button id="boothAddBtn" onclick="saveBoothStockAction('ADD')" class="px-4 py-2 bg-purple-700 hover:bg-purple-600 text-white rounded text-xs font-bold shadow-sm">
+                                <i class="fa-solid fa-plus mr-1"></i> Tambah Unit
                             </button>
-                            <button onclick="saveBoothStockAction('SET')" class="px-3 py-2 bg-white hover:bg-greycair-50 border border-greycair-300 text-slate-700 rounded text-xs font-bold">
-                                Tetapkan Nilai Tepat (Set Baki)
+                            <button id="boothSetBtn" onclick="saveBoothStockAction('SET')" class="px-3.5 py-2 bg-white hover:bg-greycair-50 border border-greycair-300 text-slate-700 rounded text-xs font-bold">
+                                Tetapkan Nilai (Set Baki)
                             </button>
                         </div>
                     </div>
                 </div>
 
+                <!-- ALATAN CARIAN & FILTER TARIKH -->
+                <div class="bg-greycair-50 p-3 rounded-xl border border-greycair-200 flex flex-col md:flex-row items-stretch md:items-center justify-between gap-3">
+                    <div class="flex flex-wrap items-center gap-2 flex-1">
+                        <!-- Bar Carian Berserta Butang X -->
+                        <div class="relative w-full sm:w-64">
+                            <i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-xs"></i>
+                            <input type="text" id="boothSearchInput" oninput="handleBoothSearchInput()" placeholder="Cari nama produk / saiz / warna..." 
+                                class="w-full pl-8 pr-8 py-1.5 bg-white border border-greycair-300 rounded text-xs text-slate-800 focus:outline-none focus:border-purple-500 font-medium">
+                            <button id="boothClearSearchBtn" type="button" onclick="clearBoothSearch()" class="hidden absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-red-600" title="Kosongkan carian">
+                                <i class="fa-solid fa-circle-xmark text-xs"></i>
+                            </button>
+                        </div>
+
+                        <!-- Filter Tarikh -->
+                        <div class="flex items-center space-x-1.5 w-full sm:w-auto">
+                            <label class="text-[11px] font-bold text-slate-600 whitespace-nowrap">Tarikh Kemaskini:</label>
+                            <input type="date" id="boothDateFilter" onchange="renderBoothInventoryTable()" class="px-2 py-1 bg-white border border-greycair-300 rounded text-xs text-slate-800 font-medium focus:outline-none focus:border-purple-500">
+                            <button onclick="resetBoothDateFilter()" class="px-2 py-1 bg-greycair-200 hover:bg-greycair-300 text-slate-700 text-xs rounded border border-greycair-300" title="Reset tarikh">
+                                Reset
+                            </button>
+                        </div>
+                    </div>
+
+                    <button onclick="loadBoothInventoryFromCloud(true)" class="px-3 py-1.5 bg-white border border-greycair-300 hover:bg-greycair-100 rounded text-xs font-bold text-purple-700 shrink-0 shadow-sm">
+                        <i class="fa-solid fa-rotate mr-1"></i> Muat Semula Data
+                    </button>
+                </div>
+
                 <!-- JADUAL BAKI STOK BOOTH LUAR -->
                 <div class="border border-greycair-200 rounded-xl overflow-hidden shadow-sm">
-                    <div class="p-3 bg-greycair-50 border-b border-greycair-200 flex justify-between items-center">
-                        <h4 class="font-bold text-xs text-slate-700 uppercase">Senarai Baki Stok Booth Luar</h4>
-                        <button onclick="loadBoothInventoryFromCloud(true)" class="px-2.5 py-1 bg-white border border-greycair-300 hover:bg-greycair-100 rounded text-[11px] font-semibold text-purple-700">
-                            <i class="fa-solid fa-rotate mr-1"></i> Muat Semula
-                        </button>
-                    </div>
                     <div class="overflow-x-auto max-h-72">
                         <table class="w-full text-xs text-slate-700">
                             <thead class="bg-greycair-100 text-slate-600 uppercase font-bold sticky top-0 border-b border-greycair-200">
@@ -1764,17 +1793,19 @@
                                     <th class="p-2.5 text-left">Variasi (Saiz / Warna)</th>
                                     <th class="p-2.5 text-right">Harga (RM)</th>
                                     <th class="p-2.5 text-center">Baki Stok Booth</th>
+                                    <th class="p-2.5 text-center">Kemaskini Terakhir</th>
+                                    <th class="p-2.5 text-center">Tindakan</th>
                                 </tr>
                             </thead>
                             <tbody id="boothInventoryTableBody" class="divide-y divide-greycair-200">
-                                <tr><td colspan="4" class="p-4 text-center text-slate-500">Memuatkan data...</td></tr>
+                                <tr><td colspan="6" class="p-4 text-center text-slate-500">Memuatkan data...</td></tr>
                             </tbody>
                         </table>
                     </div>
                 </div>
             </div>
 
-            <div class="px-5 py-3 border-t border-greycair-200 flex justify-end">
+            <div class="px-5 py-3 border-t border-greycair-200 flex justify-end bg-white rounded-b-2xl">
                 <button onclick="closeBoothInventoryModal()" class="px-4 py-2 bg-greycair-200 hover:bg-greycair-300 text-xs text-slate-700 rounded font-semibold">Tutup</button>
             </div>
         </div>
@@ -5761,6 +5792,9 @@ if (isBooth) {
 
 /* ================= LOGIK INVENTORI BOOTH LUAR ================= */
 
+// Simpan tarikh kemaskini bagi setiap variasi
+let boothVariantDates = JSON.parse(localStorage.getItem('ec_booth_variant_dates')) || {};
+
 function openBoothInventoryModal() {
     populateBoothProductDropdown();
     renderBoothInventoryTable();
@@ -5769,6 +5803,7 @@ function openBoothInventoryModal() {
 }
 
 function closeBoothInventoryModal() {
+    cancelBoothEdit();
     document.getElementById('boothInventoryModal').classList.add('hidden');
     document.getElementById('boothInventoryModal').classList.remove('flex');
 }
@@ -5801,6 +5836,34 @@ function updateBoothCurrentStockHint() {
     if (hint) hint.innerText = `Stok Booth Semasa: ${cur} unit`;
 }
 
+// FUNGSI CARIAN & BUTANG X
+function handleBoothSearchInput() {
+    const q = (document.getElementById('boothSearchInput')?.value || '').trim();
+    const clearBtn = document.getElementById('boothClearSearchBtn');
+    if (clearBtn) {
+        clearBtn.classList.toggle('hidden', q.length === 0);
+    }
+    renderBoothInventoryTable();
+}
+
+function clearBoothSearch() {
+    const input = document.getElementById('boothSearchInput');
+    if (input) {
+        input.value = '';
+        input.focus();
+    }
+    const clearBtn = document.getElementById('boothClearSearchBtn');
+    if (clearBtn) clearBtn.classList.add('hidden');
+    renderBoothInventoryTable();
+}
+
+function resetBoothDateFilter() {
+    const dt = document.getElementById('boothDateFilter');
+    if (dt) dt.value = '';
+    renderBoothInventoryTable();
+}
+
+// SIMPAN ATAU TETAPKAN STOK
 function saveBoothStockAction(actionType) {
     const pid = document.getElementById('boothProdSelect')?.value;
     const p = products.find(x => String(x.id) === String(pid));
@@ -5809,18 +5872,26 @@ function saveBoothStockAction(actionType) {
     const size = document.getElementById('boothSizeSelect')?.value || 'Free Size';
     const color = document.getElementById('boothColorSelect')?.value || 'Piawai';
     const qty = parseInt(document.getElementById('boothQtyInput')?.value) || 0;
-    if (qty <= 0 && actionType === 'ADD') { alert('Sila masukkan kuantiti yang sah.'); return; }
+
+    if (qty <= 0 && actionType === 'ADD') { 
+        alert('Sila masukkan kuantiti unit yang sah.'); 
+        return; 
+    }
 
     const bKey = `${p.id}||${size}||${color}`;
     const before = Math.max(0, Number(boothVariantStocks[bKey]) || 0);
     const after = actionType === 'SET' ? qty : before + qty;
 
     boothVariantStocks[bKey] = after;
+    boothVariantDates[bKey] = new Date().toISOString();
+
     localStorage.setItem('ec_booth_variant_stocks', JSON.stringify(boothVariantStocks));
+    localStorage.setItem('ec_booth_variant_dates', JSON.stringify(boothVariantDates));
 
     updateBoothCurrentStockHint();
     renderBoothInventoryTable();
     renderProducts();
+    cancelBoothEdit();
 
     secureProxyRequest('saveBoothStockAction', {
         productId: p.id,
@@ -5835,19 +5906,134 @@ function saveBoothStockAction(actionType) {
         isSet: actionType === 'SET',
         targetQty: qty
     }, function() {
-        alert(`Berjaya kemaskini baki Booth Luar: ${p.name} (${size}/${color}) kini ${after} unit.`);
+        alert(`Baki Booth Luar berjaya dikemaskini: ${p.name} (${size}/${color}) = ${after} unit.`);
     }, function(err) {
         alert(`Baki dikemaskini setempat (Ralat Google Sheet: ${err.message})`);
     });
 }
 
+// FUNGSI EDIT ITEM BOOTH
+function editBoothStock(pid, size, color) {
+    const prodSel = document.getElementById('boothProdSelect');
+    if (prodSel) {
+        prodSel.value = pid;
+        populateBoothVariantOptions();
+    }
+    const sizeSel = document.getElementById('boothSizeSelect');
+    if (sizeSel) sizeSel.value = size;
+
+    const colorSel = document.getElementById('boothColorSelect');
+    if (colorSel) colorSel.value = color;
+
+    const cur = getBoothStock(pid, size, color);
+    const qtyInput = document.getElementById('boothQtyInput');
+    if (qtyInput) qtyInput.value = cur;
+
+    updateBoothCurrentStockHint();
+
+    // Tukar tajuk & butang kepada mod Edit
+    const title = document.getElementById('boothFormTitle');
+    if (title) title.innerHTML = `<i class="fa-solid fa-pen-to-square mr-1.5 text-purple-700"></i> Edit Baki Stok: ${size} / ${color}`;
+
+    const cancelBtn = document.getElementById('boothCancelEditBtn');
+    if (cancelBtn) cancelBtn.classList.remove('hidden');
+
+    const addBtn = document.getElementById('boothAddBtn');
+    if (addBtn) addBtn.classList.add('hidden');
+
+    const setBtn = document.getElementById('boothSetBtn');
+    if (setBtn) {
+        setBtn.innerHTML = '<i class="fa-solid fa-check mr-1"></i> Simpan Baki Baharu';
+        setBtn.className = 'px-4 py-2 bg-purple-700 hover:bg-purple-600 text-white rounded text-xs font-bold shadow-sm';
+    }
+
+    // Scroll perlahan ke atas borang
+    document.getElementById('boothFormTitle')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+}
+
+function cancelBoothEdit() {
+    const title = document.getElementById('boothFormTitle');
+    if (title) title.innerHTML = '<i class="fa-solid fa-box-open mr-1.5"></i> Tambah / Kemaskini Stok Booth';
+
+    const cancelBtn = document.getElementById('boothCancelEditBtn');
+    if (cancelBtn) cancelBtn.classList.add('hidden');
+
+    const addBtn = document.getElementById('boothAddBtn');
+    if (addBtn) addBtn.classList.remove('hidden');
+
+    const setBtn = document.getElementById('boothSetBtn');
+    if (setBtn) {
+        setBtn.innerHTML = 'Tetapkan Nilai (Set Baki)';
+        setBtn.className = 'px-3.5 py-2 bg-white hover:bg-greycair-50 border border-greycair-300 text-slate-700 rounded text-xs font-bold';
+    }
+    const qtyInput = document.getElementById('boothQtyInput');
+    if (qtyInput) qtyInput.value = 5;
+    updateBoothCurrentStockHint();
+}
+
+// FUNGSI DELETE ITEM BOOTH
+function deleteBoothStock(pid, size, color) {
+    const p = products.find(x => String(x.id) === String(pid));
+    const pName = p ? p.name : `Produk #${pid}`;
+    const bKey = `${pid}||${size}||${color}`;
+    const curStock = boothVariantStocks[bKey] || 0;
+
+    const sah = confirm(`Adakah anda pasti mahu memadam item ini dari Inventori Booth Luar?\n\nProduk: ${pName}\nVariasi: ${size} / ${color}\nBaki Semasa: ${curStock} unit\n\n(Stok butik utama tidak akan terjejas).`);
+    if (!sah) return;
+
+    delete boothVariantStocks[bKey];
+    delete boothVariantDates[bKey];
+
+    localStorage.setItem('ec_booth_variant_stocks', JSON.stringify(boothVariantStocks));
+    localStorage.setItem('ec_booth_variant_dates', JSON.stringify(boothVariantDates));
+
+    renderBoothInventoryTable();
+    renderProducts();
+    updateBoothCurrentStockHint();
+
+    secureProxyRequest('deleteBoothStock', {
+        productId: pid,
+        size: size,
+        color: color
+    }, function() {
+        alert(`Item ${pName} (${size}/${color}) berjaya dipadam dari Inventori Booth Luar.`);
+    }, function(err) {
+        alert(`Dipadam secara setempat (Ralat Google Sheet: ${err.message})`);
+    });
+}
+
+// PAPARKAN JADUAL BOOTH BERSERTA FILTER & TINDAKAN
 function renderBoothInventoryTable() {
     const tbody = document.getElementById('boothInventoryTableBody');
     if (!tbody) return;
-    const keys = Object.keys(boothVariantStocks).filter(k => Number(boothVariantStocks[k]) > 0);
+
+    const search = (document.getElementById('boothSearchInput')?.value || '').toLowerCase().trim();
+    const dateVal = document.getElementById('boothDateFilter')?.value || '';
+
+    let keys = Object.keys(boothVariantStocks).filter(k => Number(boothVariantStocks[k]) > 0);
+
+    // 1. Tapis mengikut Carian (Nama, Saiz, Warna, SKU)
+    if (search) {
+        keys = keys.filter(k => {
+            const [pid, size, color] = k.split('||');
+            const p = products.find(x => String(x.id) === String(pid));
+            const pName = (p ? p.name : '').toLowerCase();
+            const pSku = (p ? (p.sku || '') : '').toLowerCase();
+            return pName.includes(search) || pSku.includes(search) || size.toLowerCase().includes(search) || color.toLowerCase().includes(search);
+        });
+    }
+
+    // 2. Tapis mengikut Tarikh
+    if (dateVal) {
+        keys = keys.filter(k => {
+            const dateStr = boothVariantDates[k];
+            if (!dateStr) return false;
+            return dateStr.slice(0, 10) === dateVal;
+        });
+    }
 
     if (keys.length === 0) {
-        tbody.innerHTML = '<tr><td colspan="4" class="p-4 text-center text-slate-500">Tiada stok dalam inventori booth luar. Sila masukkan kuantiti di atas.</td></tr>';
+        tbody.innerHTML = '<tr><td colspan="6" class="p-4 text-center text-slate-500">Tiada rekod stok booth ditemui mengikut tapisan.</td></tr>';
         return;
     }
 
@@ -5855,12 +6041,24 @@ function renderBoothInventoryTable() {
         const [pid, size, color] = k.split('||');
         const p = products.find(x => String(x.id) === String(pid)) || { name: 'Produk #' + pid, price: 0 };
         const stock = boothVariantStocks[k];
+        const dateRaw = boothVariantDates[k];
+        const dateDisplay = dateRaw ? new Date(dateRaw).toLocaleDateString('ms-MY', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' }) : '-';
+
         return `
             <tr class="hover:bg-purple-50/50">
                 <td class="p-2.5 font-semibold text-slate-800">${p.name}</td>
                 <td class="p-2.5 text-slate-600">${size} / ${color}</td>
                 <td class="p-2.5 text-right font-medium">RM ${Number(p.price || 0).toFixed(2)}</td>
                 <td class="p-2.5 text-center font-bold text-purple-700">${stock} unit</td>
+                <td class="p-2.5 text-center text-slate-500 text-[11px]">${dateDisplay}</td>
+                <td class="p-2.5 text-center space-x-1 whitespace-nowrap">
+                    <button onclick="editBoothStock('${pid}', '${size}', '${color}')" class="px-2 py-1 bg-amber-500 hover:bg-amber-600 text-white rounded text-[10px] font-bold shadow-sm" title="Edit kuantiti">
+                        <i class="fa-solid fa-pen-to-square mr-1"></i> Edit
+                    </button>
+                    <button onclick="deleteBoothStock('${pid}', '${size}', '${color}')" class="px-2 py-1 bg-rose-600 hover:bg-rose-700 text-white rounded text-[10px] font-bold shadow-sm" title="Padam item">
+                        <i class="fa-solid fa-trash-can mr-1"></i> Padam
+                    </button>
+                </td>
             </tr>
         `;
     }).join('');
@@ -5869,11 +6067,16 @@ function renderBoothInventoryTable() {
 function loadBoothInventoryFromCloud(notify = false) {
     secureProxyRequest('getBoothInventory', {}, function(res) {
         const variants = res.variants || [];
+        boothVariantStocks = {};
         variants.forEach(v => {
             const key = `${v.id}||${v.size}||${v.color}`;
             boothVariantStocks[key] = Number(v.stock) || 0;
+            if (v.updatedAt) {
+                boothVariantDates[key] = new Date(v.updatedAt).toISOString();
+            }
         });
         localStorage.setItem('ec_booth_variant_stocks', JSON.stringify(boothVariantStocks));
+        localStorage.setItem('ec_booth_variant_dates', JSON.stringify(boothVariantDates));
         renderBoothInventoryTable();
         renderProducts();
         if (notify) alert('Inventori Booth Luar berjaya dimuat semula dari Google Sheets.');
